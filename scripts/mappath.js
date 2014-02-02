@@ -171,6 +171,24 @@ function MapPath(map, data) {
 		pathTypes.splice(index, 1);
 		this.redraw();
 	};
+	
+	this.dumpJson = function(){
+		var data = {};
+		data.lines = [{}];
+		var line = data.lines[0];
+		line.vertices = [];
+		for (key in pathPoints) {
+			var vert = {};
+			var point = pathPoints[key];
+			var type = pathTypes[key];
+			var p = m.ll2p(point);
+			vert.x = p.x;
+			vert.y = p.y;
+			vert.type = type;
+			line.vertices.push(vert);
+		}
+		return JSON.stringify(data);
+	}
 
 	if(data.type){
 		this.addType(data.type);

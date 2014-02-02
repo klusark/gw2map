@@ -126,21 +126,21 @@ if(typeof URLquery.zoom != 'undefined'){
 		}
 	}
 }
-
+var m;
 // on page load
 $(document).ready(function(){
 	var loadStart = new Date().getTime();
-	var m = new map();
+	m = new map();
 	m.create();
 });
 
 function map() {
-
+	var myPath;
 	var max_zoom = function(){
 		return maxZoom;
 	};
 
-	var ll2p = function(latlng){
+	this.ll2p = function(latlng){
 		var p = fromLatLngToPoint(latlng, max_zoom());
 		p.x -= (mapSize*8), p.y -= (mapSize*8);
 		return p;
@@ -372,13 +372,15 @@ function map() {
 		});
 
 		google.maps.event.addListener(gmap, 'rightclick', function(e){
-			var point = ll2p(e.latLng);
+			var point = m.ll2p(e.latLng);
 			console.log(point.x + ", " + point.y);
+			console.log(myPath.dumpJson());
 		});
 
 
 		loadData();
 		updateControls();
+		createTestPath();
 	}
 
 
@@ -694,31 +696,24 @@ function map() {
 			}],
 		};
 
-		var myPath = new MapPath(gmap, {
-			types: [pathStyleNormal, pathStyleUnderground],
-			vertices: [
-				{
-					pos: p2ll(new google.maps.Point(4000,4000)),
-					type: 0,
-				},
-				{
-					pos: p2ll(new google.maps.Point(6000,6000)),
-					type: 0,
-				},
-				{
-					pos: p2ll(new google.maps.Point(12000,7000)),
-					type: 1,
-				},
-				{
-					pos: p2ll(new google.maps.Point(9000,10000)),
-					type: 0,
-				},
-				{
-					pos: p2ll(new google.maps.Point(10000,11000)),
-					type: 0,
-				},
-			],
+		$.getJSON( "data/dboPoints.json", function( data ) {
+			for (key in data.lines) {
+				var line = data.lines[key];
+				var verts = [];
+				for (vertkey in line.vertices) {
+					var vert = line.vertices[vertkey];
+					verts.push({
+									pos: p2ll(new google.maps.Point(vert.x, vert.y)),
+									type: vert.type,
+								});
+				}
+				myPath = new MapPath(gmap, {
+					types: [pathStyleNormal, pathStyleUnderground],
+					vertices: verts
+				});
+			}
 		});
+
 	}
 
 };
