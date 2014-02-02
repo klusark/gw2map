@@ -64,8 +64,8 @@ var maxZoom = 11;
 var mapSize = Math.max(dboMapInfo.size.x, dboMapInfo.size.y);
 var markerZoom = 9;
 var waypointZoom = 8;
-var startMapPos = {x: mapSize/2, y: mapSize/2};
-var startMapZoom = 8;
+var startMapPos = {x: 27000, y: 14644 };
+var startMapZoom = 9;
 var markersStartVisible = startMapZoom > markerZoom;
 
 // process target
