@@ -9,6 +9,24 @@
     font-style: normal;
 }
 
+#panel {
+	position: absolute;
+	top: 5px;
+	left: 5%;
+	z-index: 5;
+	background-color: #fff;
+	padding: 5px;
+	border: 1px solid #999;
+}
+#panel2 {
+	position: absolute;
+	top: 50px;
+	left: 5%;
+	z-index: 5;
+	background-color: #fff;
+	padding: 5px;
+	border: 1px solid #999;
+}
 html, body, #gw2map{
 	margin: 0;
 	padding: 0;
